@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+</head>
+<body>
+	<header>
+		<a href="../index.html">На головну</a>
+	</header>
+		<main>
+			<p>Задача 2. Створити клас TMoney для роботи з грошовими сумами. Сума повинна зберігатися у вигляді доларового еквіваленту. Реалізувати методи додавання/вилучення грошової маси, вказуючи необхідну суму у гривнях, та визначення курсу долара, при якому сума у гривнях збільшиться на 100. Курс долара зберігати в окремому полі. </p>
+			<h2>Розвʼязок:</h2>
+			<script>
+				class TMoney{
+					#dollarRate
+					constructor(dollarRate,dollars){
+						this.#dollarRate=dollarRate
+						this.dollars=dollars
+					}
+					get Rate(){
+						return this.#dollarRate
+					}
+					set Rate(newRate){
+						if(newRate<15&&newRate>50) throw new Error ('Incorrect rate')
+						return this.#dollarRate=newRate
+					}
+					increaseMoney(value){
+						this.dollars+=value/this.#dollarRate
+					}
+					decreaseMoney(value){
+						if ((value/this.#dollarRate)>this.dollars) throw new Error('Incorrect value of money')
+						this.dollars-=value/this.#dollarRate
+					}
+					toString(){
+						return `Кількість долларів:${this.dollars.toFixed(2)}; курс = ${this.#dollarRate}`
+					}
+				}
+				let money=new TMoney(36,1000)
+				money.increaseMoney(5000)
+				money.decreaseMoney(1000)
+				document.write(money)
+
+			</script>
+		</main>
+</body>
+</html>

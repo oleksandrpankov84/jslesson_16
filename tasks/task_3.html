@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+</head>
+<body>
+	<header>
+		<a href="../index.html">На головну</a>
+	</header>
+	<main>
+		<h2>Задача 3. Об’єкт “Фірма” (використати члени-класи)</h2>
+		<ul>
+			<b>Поля:</b>
+			<li>назва фірми;</li>
+			<li>дата заснування (рік, місяць);</li>
+			<li>послуги (назва послуги, вартість, термін виконання);</li>
+			<li>адреси філіалів (країна, місто, вулиця, номер будинку);</li>
+			<b>Методи:</b>
+			<li>визначення кількості років існування фірми;</li>
+			<li>виведення всіх філіалів фірми у вказаному місті;</li>
+			<li>виведення на екран послуг, що можуть бути виконані за вказану суму грошей та вказаний термін часу;</li>
+		</ul>
+		<h2>Розвʼязок:</h2>
+		<script>
+			let servises
+
+			class Foudaion{
+				constructor(month,year){
+					this.month=month
+					this.year=year
+				}
+				toString(){
+					return `Дата створення ${this.month} місясь ${this.year}рік.`
+				}
+			}
+			let foundationDate=new Foudaion(10, 2020)
+			
+			class Services{
+				constructor(nameServices,costServices,executionTime){
+					this.nameServices=nameServices
+					this.costServices=costServices
+					this.executionTime=executionTime
+				}
+				toString(){
+					return `Послуга: ${this.nameServices}, вартість: ${this.costServices}грн, час виконання: ${this.executionTime}`
+				}
+			}
+			let services=[
+				new Services('Діагностика авто(комплекс)',1000,2),
+				new Services('Діагностика ходової', 500, 1),
+				new Services('Компьютерна діагностика авто',400, 1),
+				new Services('Підкачка коліс',20, 0,1),
+				new Services('Розвал сходження', 600, 2)
+			]
+
+			class Addresses{
+				constructor(country,city,street,building){
+					this.country=country
+					this.city=city
+					this.street=street
+					this.building=building
+				}
+				toString(){
+					return `Адреса філіала: ${this.country}, ${this.city}, ${this.street}, ${this.building}`
+				}
+			}
+			let addresses=[
+				new Addresses('Україна','Житомир','Київська', '77'),
+				new Addresses('Україна','Київ','Житомирська', '26-Б'),
+				new Addresses('Україна','Ровно','Соборна', '48'),
+				new Addresses('Україна','Житомир','Східна','43А')
+			]
+
+			class Firm{
+				constructor(firmName,foundationDate,services,addresses){
+					this.firmName=firmName
+					this.foundationDate=foundationDate
+					this.services=services
+					this.addresses=addresses
+				}
+				getAgeFirm(){
+					const currentYear=new Date().getFullYear()
+					const ageFirm =currentYear-this.foundationDate.year 
+					return `Вік створеної фірми складає ${ageFirm} роки.`
+				}
+				getAddressbrabch(userCity){
+					let arrBranch=this.addresses.filter(el=>el.city===userCity)
+					return arrBranch
+				}
+				getServices(moneyValue){
+					let arrServices=this.services.filter(el=>el.costServices<=moneyValue)
+					return arrServices
+				}
+			}
+			let firm=new Firm('CarWoW',foundationDate,services,addresses)
+			console.log(firm.getAgeFirm())
+			console.log(firm.getAddressbrabch('Житомир'))	
+			console.log(firm.getServices(800))
+		</script>
+	</main>
+</body>
+</html>

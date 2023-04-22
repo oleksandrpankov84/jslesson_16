@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+</head>
+<body>
+	<header>
+		<a href="../index.html">На головну</a>
+	</header>
+	<p>Задача 4. Створити клас TBankomat, який моделює роботу банкомата. Клас повинен містити поля для зберігання кількості купюр кожного із номіналів від 5 до 200 гривень. Реалізувати методи знаходження максимальної та мінімальної сум, які може видати банкомат, та метод зняття деякої суми.</p>
+	<h2>Розвʼязок:</h2>
+	<script>
+		class nominalsHave{
+			#nominals
+			#qty
+			constructor(nominals,qty){
+				this.#nominals=nominals
+				this.#qty=qty
+			}
+			get Qty(){
+				return this.#qty
+			}
+			get Nominals(){
+				return this.#nominals
+			}
+			set Qty(valueOfBanknote){
+				if (valueOfBanknote<0) throw new Error('Не вірна кількість')
+				this.#qty=valueOfBanknote
+			}
+			set Nominals(userNominals){
+				if (userNominals<5 || userNominals >200) throw new Error ('Не корректний номінал купюри')
+				this.#nominals=userNominals
+			}
+			toString(){
+				return `Номінал банкноти: ${this.#nominals} грн. Кількість банкнот: ${this.#qty} шт.`
+			}
+		}
+		let arrBanknotes=[
+			new nominalsHave(10,100),
+			new nominalsHave(50,100),
+			new nominalsHave(20,100),
+			new nominalsHave(100,100),
+			new nominalsHave(5,100),
+			new nominalsHave(200,100)
+		] 
+		// console.log(arrBanknotes)
+		class TBankomat{
+			constructor(arrBanknotes){
+				// оскільки масив не великий, застосован метод sort при створенні обʼєкта для подальших методів
+				this.arrBanknotes=arrBanknotes.sort((a,b)=>a.Nominals-b.Nominals)
+			}
+			maxValueOfCash(){
+				let maxSumOfCash=this.arrBanknotes.reduce((prevSum,el)=>prevSum+(el.Qty*el.Nominals),0)
+				return maxSumOfCash
+			}
+			
+			minValueOfCah(){
+				for (const el of this.arrBanknotes) {
+					if(el.Qty>0) return el.Nominals
+				}
+				return 0
+			}
+			// Зняття готівки, зменьшує кількість банкнот та повертає масив з номіналом використаних банкнот
+			cashOut(cashValue){
+				if (cashValue<this.minValueOfCah() || cashValue>this.maxValueOfCash()) throw new Error('Не корректна сумма для зняття готівки')
+				let cashNominal=[]
+				for (let i=this.arrBanknotes.length-1; i>=0; i--) {
+					if (this.arrBanknotes[i].Qty!==0){
+						if (this.arrBanknotes[i].Nominals<=cashValue) cashNominal.push(this.arrBanknotes[i].Nominals)
+						while (cashValue>= this.arrBanknotes[i].Nominals) {
+							cashValue-=this.arrBanknotes[i].Nominals
+							this.arrBanknotes[i].Qty--
+							if(cashValue===0) break
+						}
+					}
+				}
+				if(cashValue!==0)throw new Error(`Введена сума не корректна.`)
+				return cashNominal
+			}
+		}
+		let bankomat=new TBankomat(arrBanknotes)
+		console.log(bankomat.maxValueOfCash())
+		console.log(bankomat.minValueOfCah())
+		console.log(bankomat.cashOut(1750))
+		//для перевірки зменьшення купюр
+		console.log(bankomat.arrBanknotes)
+	</script>
+</body>
+</html>

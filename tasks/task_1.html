@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+</head>
+<body>
+	<header>
+		<a href="../index.html">На головну</a>
+	</header>
+	<main>
+		<p>Задача 1. Створити клас TDate для роботи із датами у форматі “день.місяць.рік”. Дата представляється структурою із трьома полями. Реалізувати методи збільшення/зменшення дати на певну кількість днів, місяців чи років. Введення та виведення дати реалізувати за допомогою методу  toString.</p>
+		<h2>Розвʼязок:</h2>
+		<script>
+			class TDate{
+				constructor(initDay,initMonth,initYear){
+					this.day=initDay
+					this.month=initMonth
+					this.year=initYear
+				}
+				toString(){
+					return `${this.day}-${this.month}-${this.year}`
+				}
+				learYear(){
+					return this.year % 4 === 0 && (this.year % 100 !== 0 || this.year % 400 === 0)
+				}
+				dayInMonth(){
+					const monthWith_31Days=[1,3,5,7,8,10,12]
+					let dayInMonth=monthWith_31Days.includes(this.month)?31:30
+					if (this.month===2 && this.learYear())return dayInMonth=29
+					if(this.month===2) return dayInMonth=28
+					return dayInMonth
+				}
+				increaseYear(newYear){
+					this.year=this.year+newYear
+				}
+				increaseMonth(newMonth){
+					this.month+=newMonth
+					if (this.month>12){
+					this.increaseYear(Math.floor(this.month/12))
+					this.month=this.month%12
+					}
+				}
+
+				increaseDay(newDay){
+					this.day+=newDay
+					while(this.day>this.dayInMonth){
+						this.day-=this.dayInMonth
+						this.increaseMonth(1)
+					}
+				}
+				decreaseYear(newYear){
+					this.year=this.year-newYear
+				}
+				decreaseMonth(newMonth){
+					if(this.month<newMonth){
+						this.decreaseYear(Math.floor(newMonth/12))
+						this.month=((this.month-newMonth%12+11)%12)+1
+					} else this.month=this.month-newMonth
+				}
+				decreaseDay(newDay){
+					this.day-=newDay
+					while(this.day<1){
+						this.decreaseMonth(1)
+						this.day+=this.dayInMonth()
+					}
+				}
+			}
+			let date=new TDate(17, 04, 2023)
+			date.decreaseDay(56)
+			date.decreaseMonth(5)
+			date.increaseYear(15)
+			date.increaseDay(45)
+
+			document.write(date)
+
+
+		</script>
+	</main>
+</body>
+</html>
